@@ -1,6 +1,5 @@
 package com.mvn.test.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -12,14 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
 import com.google.gson.Gson;
 import com.mvn.test.common.ServletFileUtil;
 import com.mvn.test.service.PhotoBoardService;
 import com.mvn.test.service.impl.PhotoBoardServiceImpl;
+import com.mvn.test.vo.PhotoBoardVO;
 
 /**
  * Servlet implementation class PhotoBoardServlet
@@ -28,13 +24,20 @@ import com.mvn.test.service.impl.PhotoBoardServiceImpl;
 public class PhotoBoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private PhotoBoardService pbs = new PhotoBoardServiceImpl();
+    private PhotoBoardVO pbv = new PhotoBoardVO();
     private Gson gson = new Gson();
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json;charset=utf-8");
-		//String cmd = request.getParameter(cmd);
+		String cmd = request.getParameter("cmd");
+		if("list".equals(cmd)) {
 		List<Map<String,String>> pbList = pbs.selectPhotoBoardList();
 		response.getWriter().println(gson.toJson(pbList));
+		}else if("view".equals(cmd)) {
+			Map<String,Object> param = new HashMap<>();
+			Map<String,String> pb = pbs.selectPhotoBoard(param);
+			response.getWriter().println(gson.toJson(pb));
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -25,6 +25,7 @@ function makeFormData(){
 	return formData;//리턴시켜줘야 됨!!
 }
 
+var user;
 function send(conf){
 	var xhr = new XMLHttpRequest();
 	xhr.open(conf.method,conf.url);

@@ -42,15 +42,20 @@
 		</table>
 	</div>
 	<script>
-		function upload() {
+		window.onload = function() {
 			var formData = makeFormData();//위에 것을 불러옴 
 			var conf = {
-				method : 'POST',
-				url : '/photo/insert',
+				method : 'GET',
+				url : '/photo/view?cmd=view&pbNum=${param.pbNum}',
 				func : function(res) {
 					console.log(res);
 				},
 				data : formData
+				var tds = document.querySelectorAll('td[data-id]');
+				for (var idx = 0; idx < tds.length; idx++) {
+					var td = tds[idx];
+					var key = td.getAttribute('data-id');
+					td.innerHTML = user[key];
 			}
 			send(conf);
 			/* 	for(var obj of formData.entries()){
