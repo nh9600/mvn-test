@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PhotoBoard">
+	<resultMap type="map" id="pb">
+		<result property="pbContent" column="pb_content"
+			jdbcType="CLOB" javaType="string" />
+	</resultMap>
+
+	<select id="selectPhotoBoardList" resultMap="pb">
+		select pb_num
+		"pbNum", pb_title "pbTitle", pb_content, pb_img1
+		"pbImg1", pb_img2
+		"pbImg2",
+		credat "credat", cretim "cretim", creusr "creusr", moddat
+		"moddat", modtim
+		"modtim", modusr "modusr", pb_cnt "pbCnt" from
+		photo_board
+	</select>
+
+	<select id="selectPhotoBoard" resultMap="pb">
+		select * from photo_board
+		<where>
+			<if test="pbNum!=null">
+				and pb_num = #{pbNum}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertPhotoBoard">
+		insert into photo_board(
+		pb_num,
+		pb_title,
+		pb_content,
+		pb_img1,
+		pb_img2,
+		credat,
+		cretim,
+		creusr,
+		moddat,
+		modtim,
+		modusr,
+		pb_cnt)
+
+		values(SEQ_photo_board_pb_num.nextval,#{pbTitle},#{pbContent},#{pbImg1},#{pbImg2},
+		to_char(sysdate,'yyyymmdd'), to_char(sysdate,'hh24miss'),#{creusr},
+		to_char(sysdate,'yyyymmdd'), to_char(sysdate,'hh24miss'),#{creusr},0)
+	</insert>
+	<delete id="deletePhotoBoard">
+		delete from photo_board
+		where pb_num = #{pbNum}
+	</delete>
+
+</mapper>
